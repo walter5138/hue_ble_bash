@@ -78,9 +78,13 @@ Tuning:
 Append to /var/lib/bluetooth/"adapter_id"/"hue_bulb_id"/info :
  
 [ConnectionParameters]
+
 MinInterval=6
+
 MaxInterval=7
+
 Latency=0
+
 Timeout=216
 	
 Reduces the response time for the dbus-send commands.
@@ -103,7 +107,7 @@ Todo:
 
 Questions:
 
-- How to send color values the right way? What are the sent back values from the bulbs representing? Wahat data structure
+- How to send color values the right way? What are the sent back values from the bulbs representing? What data structure
   is behind it?
 
 Objectives:
