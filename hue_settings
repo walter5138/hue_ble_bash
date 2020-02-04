@@ -1,0 +1,28 @@
+#!/bin/bash
+
+lamp_kitchen=F6_0A_34_1A_BC_6F
+lamp_livingroom=EC_D6_5A_2D_93_CC
+lamp_homeoffice=DF_CA_54_1B_39_A8
+
+array_lamps=( ${lamp_kitchen} ${lamp_livingroom} ${lamp_homeoffice} )
+
+connection_test(){
+
+	for lamp in ${array_lamps[@]}
+	do
+		con=`dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp} org.freedesktop.DBus.Properties.Get string:"org.bluez.Device1" string:"Connected"`
+		con_bool=${con##* }
+
+		if [[ "${con_bool}" == "false" ]]
+		then
+			echo "connection status of ${lamp} = connecting"
+			dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp} org.bluez.Device1.Connect
+			con=`dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp} org.freedesktop.DBus.Properties.Get string:"org.bluez.Device1" string:"Connected"`
+			con_bool=${con##* }
+			echo "connection status of ${lamp} = ${con_bool}"
+		else
+			echo "connection status of ${lamp} = ${con_bool}"
+		fi
+	done
+	echo
+}

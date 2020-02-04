@@ -1,0 +1,71 @@
+#!/bin/bash
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. /home/walter/bluetooth/hue/hue_bash/hue_settings
+
+connection_test
+
+val=50
+already_send="no"
+
+convert_send() {
+	
+	bri="0x$(printf '%02x' "${val}")"
+
+	echo ${val}
+	echo ${bri}
+
+	for lamp in ${array_lamps[@]}
+	do
+		dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp}/service0023/char0029 org.bluez.GattCharacteristic1.WriteValue array:byte:"${bri}" dict:string:variant:
+	done
+
+	echo
+}
+
+echo "brightness: [+/-/q] :" 
+
+while read -s -n 1 bri 
+do
+	case ${bri} in
+		+)
+			((val+=5))
+
+			if [[ $val -ge 254 ]]
+			then
+				val=254
+				echo -e "${val} = maximum brightness\n"
+				[[ ${already_send} == "no" ]] && convert_send
+				already_send="yes"
+			else
+				convert_send
+				already_send="no"
+			fi
+			;;
+		-)
+			((val-=5))
+
+			if [[ $val -le 1 ]]
+			then
+				val=1
+				echo -e "${val} = minimum brightness\n"
+				[[ ${already_send} == "no" ]] && convert_send
+				already_send="yes"
+			else
+				convert_send
+				already_send="no"
+			fi
+			;;
+		q)
+			echo -e "bye bye (;-)\n"
+			break
+			;;
+		*)
+			echo -e "Please just use + or - or (q)uit.\n"
+			;;
+	esac
+
+done
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values
+

@@ -1,0 +1,101 @@
+#!/bin/bash
+
+
+################ TODO has to be altered using diferent number of bulbs!!!! #####################
+
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. hue_settings
+
+connection_test
+
+while read -p "Please input one color: (w)hite, (r)ed, (y)ellow, (g)reen, (c)yan, (b)lue, (m)agenta: " col
+do
+	case "${col}" in
+		"white"|"w")
+			col_hex="0x01, 0x55, 0x55, 0x55"
+			break
+		    ;;
+		"red"|"r")
+			col_hex="0x01, 0xfe, 0x00, 0x01"
+			break
+		    ;;
+		"green"|"g")
+			col_hex="0x01, 0x00, 0x01, 0xfe"
+			break
+		    ;;
+		"blue"|"b")
+			col_hex="0x01, 0x00, 0xfe, 0x01"	
+			break
+		    ;;
+		"yellow"|"y")
+			col_hex="0x01, 0x7f, 0x00, 0x7f"
+			break
+		    ;;
+		"cyan"|"c")
+			col_hex="0x01, 0x00, 0x7f, 0x7f"
+			break
+		    ;;
+		"magenta"|"m")
+			col_hex="0x01, 0x7f, 0x7f, 0x00"	
+			break
+		    ;;
+		*)
+			continue
+		    ;;
+	esac
+done
+
+while read -p "send to lamp: 1, 2, 3 or to (a)ll : " lamp
+do
+	case "${lamp}" in
+		"1")
+			send_to_1="yes_send"
+			break
+		    ;;
+		"2")
+			send_to_2="yes_send"
+			break
+		    ;;
+		"3")
+			send_to_3="yes_send"
+			break
+		    ;;
+		"1 2"|"12")
+			send_to_1="yes_send"
+			send_to_2="yes_send"
+			break
+		    ;;
+		"2 3"|"23")
+			send_to_2="yes_send"
+			send_to_3="yes_send"
+			break
+		    ;;
+		"1 3"|"13")
+			send_to_1="yes_send"
+			send_to_3="yes_send"
+			break
+		    ;;
+		"all"|"a"|"123"|"1 2 3")
+			send_to_1="yes_send"
+			send_to_2="yes_send"
+			send_to_3="yes_send"
+			break
+		    ;;
+		*)
+			echo "For the Moment there are lamps 1, 2, 3 or (a)ll." 
+			continue
+		    ;;
+	esac
+done
+
+[[ "$send_to_1" == "yes_send" ]] && dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant:
+[[ "$send_to_2" == "yes_send" ]] && dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant:
+[[ "$send_to_3" == "yes_send" ]] && dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant:
+
+#if [[ "$send_to_1" == "yes_send" ]] ; then dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant: ; fi
+#if [[ "$send_to_2" == "yes_send" ]] ; then dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant: ; fi
+#if [[ "$send_to_3" == "yes_send" ]] ; then dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant: ; fi
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values
+

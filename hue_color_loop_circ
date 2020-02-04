@@ -1,0 +1,66 @@
+#!/bin/bash
+
+
+################ TODO has to be altered using diferent number of bulbs!!!! #####################
+
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. hue_settings
+
+connection_test
+
+red="0x01, 0xfe, 0x00, 0x01"
+yellow="0x01, 0x7f, 0x00, 0x7f"
+green="0x01, 0x00, 0x01, 0xfe"
+cyan="0x01, 0x00, 0x7f, 0x7f"
+blue="0x01, 0x00, 0xfe, 0x01"	
+magenta="0x01, 0x7f, 0x7f, 0x00"	
+
+my_colors=("${red}" "${yellow}" "${green}" "${cyan}" "${blue}" "${magenta}")
+
+it=0
+pos_kitchen=0
+pos_livingroom=1
+pos_homeoffice=2
+col_kitchen=""
+col_livingroom=""
+col_homeoffice=""
+
+while [[ ${it} -lt 3600 ]]
+do
+	col_kitchen=${my_colors[${pos_kitchen}]}
+	if [[ ${pos_kitchen} -lt 5 ]]
+	then	
+		((pos_kitchen+=1))
+	else
+		((pos_kitchen=0))
+	fi
+
+	col_livingroom=${my_colors[${pos_livingroom}]}
+	if [[ ${pos_livingroom} -lt 5 ]]
+	then	
+		((pos_livingroom+=1))
+	else
+		((pos_livingroom=0))
+	fi
+
+	col_homeoffice=${my_colors[${pos_homeoffice}]}
+	if [[ ${pos_homeoffice} -lt 5 ]]
+	then	
+		((pos_homeoffice+=1))
+	else
+		((pos_homeoffice=0))
+	fi
+
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_kitchen}" dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_livingroom}" dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_homeoffice}" dict:string:variant:
+
+	(( it+=1 ))
+
+	echo
+
+	sleep 2 
+done
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values

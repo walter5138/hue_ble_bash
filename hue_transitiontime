@@ -1,0 +1,27 @@
+#!/bin/bash
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. hue_settings
+
+connection_test
+
+while read -p "transitiontime in miliseconds 0-4 : " x 
+do
+	if [[ ${x} -ge 0 ]] && [[ ${x} -le 4 ]]
+	then
+		tra="0x0${x}, 0x00"
+		break
+	else
+		echo "Value out of range"
+		continue
+	fi
+done
+
+echo ${tra}
+
+for lamp in ${array_lamps[@]}
+do
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp}/service0023/char0037 org.bluez.GattCharacteristic1.WriteValue array:byte:"${tra}" dict:string:variant:
+done
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. hue_settings
+
+connection_test
+
+while read -p "You can make the lamps (p)ing once or (b)link 15 times and (s)top blinking while blinking " x
+do
+
+	case "${x}" in
+		p)
+			y="0x01"
+			break
+			;;
+		b)
+			y="0x02"	
+			break
+			;;
+		s)
+			y="0x00"
+			break
+			;;
+		*)
+			echo "Please just input (p)ing, (b)link or (s)top."
+			continue
+			;;
+
+	esac
+done
+
+for lamp in ${array_lamps[@]}
+do
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp}/service0023/char0032 org.bluez.GattCharacteristic1.WriteValue array:byte:"${y}" dict:string:variant:
+done
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values
+

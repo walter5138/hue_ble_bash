@@ -1,0 +1,120 @@
+#!/bin/bash
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. hue_settings
+
+connection_test
+
+send_string=""
+
+while read -p "Should the lamps be on or off when they are ac powered on ? " on_off 
+do
+
+	case "${on_off}" in
+		on)
+			send_string="0x01, 0x01, 0x01"
+			break
+			;;
+		off)
+			send_string="0x01, 0x01, 0x00"	
+			break
+			;;
+		*)
+			echo -e "Please just input 'on' or 'off'"
+			continue
+			;;
+	esac
+
+done
+
+echo
+
+while read -p "Set the brightness from 1 to 254 when they are ac powered on : " bri 
+do
+	if [[ ${bri} -ge 1 ]] && [[ ${bri} -le 254 ]]
+	then
+		bri_hex="0x$(printf '%02x' "${bri}")"
+		send_string+=", 0x02, 0x01, ${bri_hex}"
+		break
+	else
+		 echo "Value out of range."
+		 continue
+	fi
+done
+
+echo
+
+while read -p "Should the lamps start with a mired (w)hite or some nice (c)olor ? " w_c 
+do
+
+	case "${w_c}" in
+		w)
+			echo
+			read -p "Set color-themperature in mired from 153 (=cold) to 500 (=warm): " col_temp 
+
+			col_temp_hex="$(printf '%04x' "${col_temp}")"
+
+			c="0x"${col_temp_hex:0:2}
+			t="0x"${col_temp_hex:2}
+
+			send_string+=", 0x03, 0x02, $t, $c, 0x04, 0x04, 0xff, 0xff, 0xff, 0xff"
+			break
+			;;
+		c)
+			echo
+			while read -p "Please input one color: (w)hite, (r)ed, (y)ellow, (g)reen, (c)yan, (b)lue, (m)agenta: " col
+			do
+				case "${col}" in
+					"white"|"w")
+						col_hex="0x01, 0x55, 0x55, 0x55"
+						break
+					    ;;
+					"red"|"r")
+						col_hex="0x01, 0xfe, 0x00, 0x01"
+						break
+					    ;;
+					"green"|"g")
+						col_hex="0x01, 0x00, 0x01, 0xfe"
+						break
+					    ;;
+					"blue"|"b")
+						col_hex="0x01, 0x00, 0xfe, 0x01"	
+						break
+					    ;;
+					"yellow"|"y")
+						col_hex="0x01, 0x7f, 0x00, 0x7f"
+						break
+					    ;;
+					"cyan"|"c")
+						col_hex="0x01, 0x00, 0x7f, 0x7f"
+						break
+					    ;;
+					"magenta"|"m")
+						col_hex="0x01, 0x7f, 0x7f, 0x00"	
+						break
+					    ;;
+					*)
+						continue
+					    ;;
+				esac
+			done
+
+			send_string+=", 0x03, 0x02, 0xff, 0xff, 0x04, 0x04, ${col_hex}"
+			break
+			;;
+	esac
+done
+
+echo
+echo ${send_string}
+echo
+
+for lamp in ${array_lamps[@]}
+do
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp}/service0023/char0039 org.bluez.GattCharacteristic1.WriteValue array:byte:"${send_string}" dict:string:variant:
+done
+
+echo
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values
+

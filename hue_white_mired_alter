@@ -1,0 +1,74 @@
+#!/bin/bash
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. hue_settings
+
+connection_test
+
+val=326
+already_send="no"
+
+echo "makes color-temperature more warm(+) or cold(-) [+/-/q] :" 
+
+convert_send() {
+	w="$(printf '%04x' "${val}")"
+
+	c="0x"${w:0:2}
+	t="0x"${w:2}
+
+	echo ${val}
+	echo ${w}
+	echo $t", "$c
+
+	for lamp in ${array_lamps[@]}
+	do
+		dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp}/service0023/char002c org.bluez.GattCharacteristic1.WriteValue array:byte:"${t}, ${c}" dict:string:variant:
+	done
+
+	echo
+}
+
+while read -s -n 1 x
+do
+	case $x in
+		+)
+			((val+=10))
+
+			if [[ $val -ge 500 ]]
+			then
+				val=500
+				echo -e "mired ${val} = maximum warm light\n"
+				[[ ${already_send} == "no" ]] && convert_send
+				already_send="yes"
+			else
+				convert_send
+				already_send="no"
+			fi	
+			;;
+		-)
+			((val-=10))
+
+			if [[ $val -le 153 ]]
+			then
+				val=153
+				echo -e "mired ${val} = maximum cold light\n"
+				[[ ${already_send} == "no" ]] && convert_send
+				already_send="yes"
+			else
+				convert_send
+				already_send="no"
+			fi
+			;;
+		q)
+			echo -e "bye bye (;-)\n"
+			break
+			;;
+		*)
+			echo -e "please just use + or - or (q)uit.\n"
+			;;
+	esac
+
+done
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values
+

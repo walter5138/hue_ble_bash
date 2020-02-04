@@ -1,0 +1,27 @@
+#!/bin/bash
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. hue_settings
+
+connection_test
+
+while read -p "Please input brightness from 1 to 254 : " bri 
+do
+	if [[ ${bri} -ge 1 ]] && [[ ${bri} -le 254 ]]
+	then
+		bri_hex="0x$(printf '%02x' "${bri}")"
+		break
+	else
+		 echo "Value out of range."
+		 continue
+	fi
+done
+
+echo ${bri_hex}
+
+for lamp in ${array_lamps[@]}
+do
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp}/service0023/char0029 org.bluez.GattCharacteristic1.WriteValue array:byte:"${bri_hex}" dict:string:variant:
+done
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values

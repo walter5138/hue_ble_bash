@@ -1,0 +1,102 @@
+#!/bin/bash
+
+characteristic_values() {
+
+	echo -e '\n'
+	echo ">>>>>> Manufacturer Name String <<<<<<"
+	echo "/service000a/char000b"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service000a/char000b org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service000a/char000b org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service000a/char000b org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "Model Number String"
+	echo "/service000a/char000d"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service000a/char000d org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service000a/char000d org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service000a/char000d org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "Software Revision String"
+	echo "/service000a/char000f"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service000a/char000f org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service000a/char000f org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service000a/char000f org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "Lamp Name"
+	echo "/service0011/char0014"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0011/char0014 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0011/char0014 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0011/char0014 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "???"
+	echo "/service0011/char001b"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0011/char001b org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0011/char001b org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0011/char001b org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "read ?"
+	echo "/service0023/char0024"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char0024 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char0024 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char0024 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "on/off"
+	echo "/service0023/char0026"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char0026 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char0026 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char0026 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "brightness"
+	echo "/service0023/char0029"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char0029 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char0029 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char0029 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "mired"
+	echo "/service0023/char002c"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char002c org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char002c org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char002c org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "color"
+	echo "/service0023/char002f"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char002f org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char002f org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char002f org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "on/off, brightness, mired, color"
+	echo "/service0023/char0034"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char0034 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char0034 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char0034 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "transitiontime"
+	echo "/service0023/char0037"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char0037 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char0037 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char0037 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "AC_ON values : on/off, brightness, mired, color"
+	echo "/service0023/char0039"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char0039 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char0039 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char0039 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "???  ???"
+	echo "/service003b/char003c"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service003b/char003c org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service003b/char003c org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service003b/char003c org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "read scheint zu funktionieren, wehrt ist 02 00"
+	echo "/service003b/char003e/desc0040"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service003b/char003e/desc0040 org.bluez.GattDescriptor1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service003b/char003e/desc0040 org.bluez.GattDescriptor1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service003b/char003e/desc0040 org.bluez.GattDescriptor1.ReadValue dict:string:variant:
+	echo -e '\n'
+	echo "???  ???"
+	echo "/service003b/char0043"
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service003b/char0043 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service003b/char0043 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+	dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service003b/char0043 org.bluez.GattCharacteristic1.ReadValue dict:string:variant:
+
+}

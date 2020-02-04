@@ -1,0 +1,44 @@
+#!/bin/bash
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
+. hue_settings
+
+connection_test
+
+red="0x01, 0xfe, 0x00, 0x01"
+yellow="0x01, 0x7f, 0x00, 0x7f"
+green="0x01, 0x00, 0x01, 0xfe"
+cyan="0x01, 0x00, 0x7f, 0x7f"
+blue="0x01, 0x00, 0xfe, 0x01"	
+magenta="0x01, 0x7f, 0x7f, 0x00"	
+
+my_colors=("${red}" "${yellow}" "${green}" "${cyan}" "${blue}" "${magenta}")
+
+it=0
+pos=0
+
+while [[ ${it} -lt 1800 ]]
+do
+	col_hex=${my_colors[${pos}]}
+	echo ${col_hex}
+
+	for lamp in ${array_lamps[@]}
+	do
+		dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant:
+	done
+
+	echo
+
+	if [[ ${pos} -lt 5 ]]
+	then	
+		((pos+=1))
+	else
+		((pos=0))
+	fi
+
+	(( it+=1 ))
+
+	sleep 2 
+done
+
+[[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values
