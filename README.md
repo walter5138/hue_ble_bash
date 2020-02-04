@@ -1,4 +1,4 @@
-This is a linux project to controll Philips Hue Bluetooth color and white bulbs using:
+This is a linux project controlling Philips Hue Bluetooth color and white bulbs using:
 - Bluez
 - Dbus
 - Bash
@@ -38,7 +38,7 @@ Following prerequisites are required:
 
 4. 3 Philips Hue Bluetooth color and white light bulbs ( LCA001 )
    If you have more or less than 3 Bulbs you have to alter some scripts
-   at the moment.
+   at the moment. See TODO.
 
 
 Get it working:
@@ -61,7 +61,7 @@ Use bluetoothctl to pair and connect the bulbs:
 Set the Bulb addresses in hue_settings:
 - Insert the Bulb(s) address(es) eq. XX:XX:XX:XX:XX:XX in the file hue_settings.
   Convert XX:XX:XX:XX:XX:XX to XX_XX_XX_XX_XX_XX for dbus to understand it.
-- If you have another number of bulbs see ToDo.
+- If you have another number of bulbs see TODO.
 
 Have fun controlling the bulbs: ./hue_...
 
@@ -90,27 +90,28 @@ Todo:
 
 - Commend the scripts!
 - Work on README.
-- Dig into these ConnectionParameters in /var/lib/bluetooth/"adapter_id"/"hue_bulb_id"/info to set values that make more sense !!!
+- Dig into these ConnectionParameters in /var/lib/bluetooth/"adapter_id"/"hue_bulb_id"/info to set values that make
+  more sense !!!
 - Figure out the bulbs color transition !!!
-  In short: the color is representet with 4 hex values eq. "37 27 2c 0c" for blue. This values could be CIE color gamut xy coordinates or hue and saturation.
-  I send kind a RGB values which are translatet IN THE BULB! eq. "0x01 0xfe 0x01 0x01" is translated to "05 b1 ec 4e" for red.
-  If you are interested i can describe much more.
-- Alter the scripts to use different number of Bulbs. Implement hue_config.
-- Check what they are communicating with a BLE sniffer. 
-- Light a candle for Philips to publish a bluetooth API, but, no, if they'd done i wouldn't have learned that "much".
+  In short: the color is representet with 4 hex values eq. "37 27 2c 0c" for blue. This values could be CIE color gamut xy
+  coordinates or hue and saturation.
+  I send a kind of RGB values which are translatet IN THE BULB! eq. "0x01 0xfe 0x01 0x01" is translated to "05 b1 ec 4e" for red.
+  If you are interested in further detail i can describe much more.
+- Alter the scripts to use different number of Bulbs.
 - Hue Bulbs are just able to pair once. If you attempt to pair one more time eq. you want to pair with another controller,
   you have to do a factory reset! To do so you need a Philips remote. Hopefully there is another way doing it.
-- ........
-
 
 Questions:
 
-- Learn to see and interpret BLE communication with a BLE sniffer.
-  I hope to find some answeres in your developers guide book.
+- How to send color values the right way? What are the sent back values from the bulbs representing? Wahat data structure
+  is behind it?
 
-Thoughts:
+Objectives:
 
-- Goal is to develop a linux hue application perhaps with gui later, keeping it as simple as possible, but using ALL possible aspects of BLE.
+- Learn about Bluetooth Low Energy.
+- Get familiar with Linux bluetooth stack Bluez.
+- Make those GATT characteristics available.
+- Beginning with bash, porting it to python, covert it to c, becomming a BLE-Developer (;-).  
 - It should be a learning project which clarifies BLE and Bluez using Linux making it more usable for all who are interested in.
 
 
