@@ -93,9 +93,5 @@ done
 [[ "$send_to_2" == "yes_send" ]] && dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant:
 [[ "$send_to_3" == "yes_send" ]] && dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant:
 
-#if [[ "$send_to_1" == "yes_send" ]] ; then dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_kitchen}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant: ; fi
-#if [[ "$send_to_2" == "yes_send" ]] ; then dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_livingroom}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant: ; fi
-#if [[ "$send_to_3" == "yes_send" ]] ; then dbus-send --print-reply --system --dest=org.bluez /org/bluez/hci0/dev_${lamp_homeoffice}/service0023/char002f org.bluez.GattCharacteristic1.WriteValue array:byte:"${col_hex}" dict:string:variant: ; fi
-
 [[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && characteristic_values
 
