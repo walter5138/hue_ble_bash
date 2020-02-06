@@ -1,7 +1,7 @@
 #!/bin/bash
 
 [[ $1 == "--debug" ]] || [[ $1 == "-d" ]] && . hue_debug
-. /home/walter/bluetooth/hue/hue_bash/hue_settings
+. hue_settings
 
 connection_test
 
