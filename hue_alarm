@@ -5,7 +5,7 @@
 
 connection_test
 
-while read -p "You can make the lamps (p)ing once or (b)link 15 times and (s)top blinking while blinking " x
+while read -p "You can make the lamps (p)ing once or (b)link 15 times and (s)top blinking while blinking :" x
 do
 
 	case "${x}" in
