@@ -1,12 +1,15 @@
-This is a linux project controlling Philips Hue Bluetooth color and white bulbs using:
+# hue_ble_bash
+Project controlling Philips Hue Bluetooth color and white bulbs. Bash version.
+
+Project controlling Philips Hue Bluetooth color and white bulbs using:
 - Bluez
 - Dbus
 - Bash
-- Philips Hue Bluetooth color and white bulbs ( LCA001 )
+- Philips Hue Bluetooth color and white bulbs ( LCA001 tested),
+  and with all other Philips Hue lamps with the same characteristics.
 
 
-It is a learning project at this state and there are many improvementes to make,
-to get it to 'easy to use for everybody' state.
+It is a learning project and there are many improvementes to make,
 But you can:
 - connect the bulbs
 - switch the bulbs on and off
@@ -17,7 +20,16 @@ But you can:
 - have different color loops
 - change transition time
 - alarm funktion: ping or blink  
-- set an alias
+- set the bulb name
+
+It demonstrates what the characteristics do.
+Aware of that you can use them in your own projects.
+
+This project is in daily development.
+Therefore it is not granted to work for everybody.
+
+If you are just interested in what the characteristics do
+watch the file hue_debug.
 
 
 Following prerequisites are required:
@@ -32,11 +44,11 @@ Following prerequisites are required:
    This patch is for the dbus-send utility to get the capability to send the data type dict:string:variant a{sv} .
    Dbus understands a{sv} but dbus-send can't send it out of the box, therefore the patch.
 
-2. Dbus running with system bus and session bus
+3. Dbus running with system bus
 
-3. The Linux bluetooth-stack Bluez build with Dbus
+4. The Linux bluetooth-stack Bluez build with Dbus
 
-4. 3 Philips Hue Bluetooth color and white light bulbs ( LCA001 )
+5. 3 Philips Hue Bluetooth color and white light bulbs ( LCA001 )
    If you have more or less than 3 Bulbs you have to alter some scripts
    at the moment. See TODO.
 
@@ -67,13 +79,13 @@ Have fun controlling the bulbs: ./hue_...
 
 
 
-Debug:
+Debug
 
 Use -d or --debug parameter to the scripts to see values of all known characteristics
 when the script finishes.
 
 
-Tuning:
+Tuning
 
 Append to /var/lib/bluetooth/"adapter_id"/"hue_bulb_id"/info :
  
@@ -90,7 +102,7 @@ Timeout=216
 Reduces the response time for the dbus-send commands.
 
 
-Todo:
+Todo
 
 - Commend the scripts!
 - Work on README.
